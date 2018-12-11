@@ -4,3 +4,10 @@ spring:
   profiles:
     active:
       default
+  cloud:
+    config:
+      label: master
+      profile: dev
+      discovery:
+        service-id: configserver
+        enabled: true

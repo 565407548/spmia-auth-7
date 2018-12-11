@@ -1,9 +1,4 @@
 spring:
-  application:
-    name: specialroutesservice
-  profiles:
-    active:
-      default
   cloud:
     config:
       label: master

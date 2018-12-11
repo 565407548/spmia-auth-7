@@ -1,4 +1,6 @@
 
+
+
 security:
   oauth2:
     resource:
@@ -21,4 +23,5 @@ eureka:
     serviceUrl:
         defaultZone: http://localhost:8761/eureka/
 
-
+server:
+  port: 8601

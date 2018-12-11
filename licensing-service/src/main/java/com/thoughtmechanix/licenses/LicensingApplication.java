@@ -1,36 +1,29 @@
 package com.thoughtmechanix.licenses;
 
 import com.thoughtmechanix.licenses.config.ServiceConfig;
-import com.thoughtmechanix.licenses.utils.UserContextInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.web.client.RestTemplate;
-import java.util.Collections;
-import java.util.List;
 
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
 @EnableResourceServer
-public class Application {
+public class LicensingApplication {
 
     @Autowired
     private ServiceConfig serviceConfig;
 
-    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+    private static final Logger logger = LoggerFactory.getLogger(LicensingApplication.class);
 
     @Bean
     public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
@@ -55,6 +48,6 @@ public class Application {
 
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(LicensingApplication.class, args);
     }
 }

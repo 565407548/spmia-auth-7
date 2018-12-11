@@ -11,7 +11,7 @@
 
 ####################################
 server:
-  port: 8888
+  port: 8889
 spring:
   cloud:
     config:
@@ -20,10 +20,10 @@ spring:
       server:
         encrypt.enabled: false
         git:
-          uri: https://github.com/carnellj/config-repo/
+          uri: https://github.com/565407548/config-repo
           searchPaths: licensingservice,organizationservice,specialroutesservice,zuulservice,authenticationservice
-          username: native-cloud-apps
-          password: 0ffended
+          username:
+          password:
 
 
 ####
@@ -31,7 +31,7 @@ spring:
 ####
 
 #server:
-#   port: 8888
+#   port: 8889
 #spring:
 #  profiles:
 #    active: native
