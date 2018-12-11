@@ -15,7 +15,7 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 server:
-  contextPath:   /auth
+  contextPath: /auth
   port: 8901
 
 #spring:
