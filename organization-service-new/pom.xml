@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.thoughtmechanix</groupId>
-  <artifactId>specialroutes-service</artifactId>
+  <artifactId>organization-service-new</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Eagle Eye Special Routes Service</name>
-  <description>Special Routes Service</description>
+  <name>New Version of Eagle Eye Organization Service</name>
+  <description>New Version of Organization Service</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -66,16 +66,11 @@
       <artifactId>h2</artifactId>
     </dependency>
 
-    <!--<dependency>-->
-      <!--<groupId>postgresql</groupId>-->
-      <!--<artifactId>postgresql</artifactId>-->
-      <!--<version>9.1-901.jdbc4</version>-->
-    <!--</dependency>-->
-      <dependency>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-          <scope>runtime</scope>
-      </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.1-901.jdbc4</version>
+    </dependency>
 
       <dependency>
           <groupId>org.springframework.security</groupId>
@@ -87,8 +82,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <start-class>com.thoughtmechanix.specialroutes.SpecialRoutesApplication</start-class>
-    <docker.image.name>johncarnell/tmx-specialroutes-service</docker.image.name>
+    <start-class>com.thoughtmechanix.organization.OrganizationNewApplication</start-class>
+    <docker.image.name>johncarnell/tmx-orgservice-new</docker.image.name>
     <docker.image.tag>chapter7</docker.image.tag>
   </properties>
 
@@ -138,6 +133,7 @@
              <groupId>org.springframework.boot</groupId>
              <artifactId>spring-boot-maven-plugin</artifactId>
          </plugin>
+
      </plugins>
  </build>
 </project>

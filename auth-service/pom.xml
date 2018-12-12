@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.thoughtmechanix</groupId>
-  <artifactId>specialroutes-service</artifactId>
+  <artifactId>auth-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Eagle Eye Special Routes Service</name>
-  <description>Special Routes Service</description>
+  <name>Eagle Eye Authentication Service</name>
+  <description>Authentication Service</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -60,17 +60,34 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-hystrix</artifactId>
     </dependency>
+      <dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-security</artifactId>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+      </dependency>
+
+
+      <dependency>
+          <groupId>org.springframework.security</groupId>
+          <artifactId>spring-security-jwt</artifactId>
+      </dependency>
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
 
-    <!--<dependency>-->
+      <!--<dependency>-->
       <!--<groupId>postgresql</groupId>-->
       <!--<artifactId>postgresql</artifactId>-->
       <!--<version>9.1-901.jdbc4</version>-->
-    <!--</dependency>-->
+      <!--</dependency>-->
+
+      <!-- mysql驱动 -->
       <dependency>
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
@@ -87,8 +104,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <start-class>com.thoughtmechanix.specialroutes.SpecialRoutesApplication</start-class>
-    <docker.image.name>johncarnell/tmx-specialroutes-service</docker.image.name>
+    <start-class>com.thoughtmechanix.authentication.AuthApplication</start-class>
+    <docker.image.name>johncarnell/tmx-auth-service</docker.image.name>
     <docker.image.tag>chapter7</docker.image.tag>
   </properties>
 

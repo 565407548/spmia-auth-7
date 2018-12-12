@@ -1,6 +1,6 @@
 spring:
   application:
-    name: specialroutes-service
+    name: auth-service
   profiles:
     active:
       default

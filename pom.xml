@@ -17,12 +17,12 @@
     <version>1.3.8.RELEASE</version>
   </parent>
   <modules>
-    <module>authentication-service</module>
+    <module>auth-service</module>
     <module>confsvr</module>
     <module>licensing-service</module>
     <module>organization-service</module>
     <module>orgservice-new</module>
-    <module>eurekasvr</module>
+    <module>eureka-service</module>
     <module>specialroutes-service</module>
     <module>zuulsvr</module>
   </modules>

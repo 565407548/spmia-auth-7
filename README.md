@@ -40,3 +40,14 @@ change to the directory containing  your chapter 7 source code.  Issue the follo
    **docker-compose -f docker/common/docker-compose.yml up**
 
 If everything starts correctly you should see a bunch of Spring Boot information fly by on standard out.  At this point all of the services needed for the chapter code examples will be running.
+
+# interface demo
++ http://localhost:5555/api/auth/token?username=john.carnell&password=password1& grant_type=password&scope=webclient& client_id=eagleeye&client_secret=thisissecret
+
+# auth
+## http://localhost:8901/auth/oauth/token
++ Authorization: Username,Password
++ Body: grant_type, scope, username, password
+
+## http://localhost:8901/auth/user
++ Headers: Authorization Bearer [access_token]

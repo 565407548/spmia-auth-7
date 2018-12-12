@@ -1,6 +1,6 @@
 spring:
   application:
-    name: licensingservice
+    name: licensing-service
   profiles:
     active:
       default
@@ -9,5 +9,5 @@ spring:
       label: master
       profile: dev
       discovery:
-        service-id: configserver
+        service-id: config-service
         enabled: true

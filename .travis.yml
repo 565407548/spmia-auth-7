@@ -24,7 +24,7 @@ script:
   - docker push johncarnell/tmx-organization-service:chapter7
   - docker push johncarnell/tmx-orgservice-new:chapter7
   - docker push johncarnell/tmx-confsvr:chapter7
-  - docker push johncarnell/tmx-eurekasvr:chapter7
+  - docker push johncarnell/tmx-eureka-service:chapter7
   - docker push johncarnell/tmx-zuulsvr:chapter7
-  - docker push johncarnell/tmx-authentication-service:chapter7
+  - docker push johncarnell/tmx-auth-service:chapter7
   - docker push johncarnell/tmx-specialroutes-service:chapter7

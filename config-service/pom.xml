@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.thoughtmechanix</groupId>
-  <artifactId>specialroutes-service</artifactId>
+  <artifactId>config-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Eagle Eye Special Routes Service</name>
-  <description>Special Routes Service</description>
+  <name>Config Server</name>
+  <description>Config Server demo project</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -29,16 +29,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-config-service</artifactId>
     </dependency>
 
     <dependency>
@@ -50,48 +42,16 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-eureka</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-config-client</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-hystrix</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-    </dependency>
-
-    <!--<dependency>-->
-      <!--<groupId>postgresql</groupId>-->
-      <!--<artifactId>postgresql</artifactId>-->
-      <!--<version>9.1-901.jdbc4</version>-->
-    <!--</dependency>-->
-      <dependency>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-          <scope>runtime</scope>
-      </dependency>
-
-      <dependency>
-          <groupId>org.springframework.security</groupId>
-          <artifactId>spring-security-rsa</artifactId>
-      </dependency>
   </dependencies>
 
+  <!--Docker build Config-->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <start-class>com.thoughtmechanix.confsvr.ConfigServerApplication</start-class>
     <java.version>1.8</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <start-class>com.thoughtmechanix.specialroutes.SpecialRoutesApplication</start-class>
-    <docker.image.name>johncarnell/tmx-specialroutes-service</docker.image.name>
+    <docker.image.name>johncarnell/tmx-confsvr</docker.image.name>
     <docker.image.tag>chapter7</docker.image.tag>
   </properties>
-
   <build>
      <plugins>
          <!-- We use the Resources plugin to filer Dockerfile and run.sh, it inserts actual JAR filename -->
