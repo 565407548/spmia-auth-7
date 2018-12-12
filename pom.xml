@@ -7,7 +7,6 @@
   <artifactId>tmx-parent-pom</artifactId>
   <packaging>pom</packaging>
 
-
   <name>thoughtmechanix-parent-pom</name>
   <description>Parent Pom for the thoughtmechanix project</description>
 

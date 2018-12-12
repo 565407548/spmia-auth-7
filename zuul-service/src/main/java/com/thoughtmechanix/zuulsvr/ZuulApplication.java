@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableZuulProxy
-public class ZuulServerApplication {
+public class ZuulApplication {
 
     /**
      * 1. 启动负载均衡
@@ -24,7 +24,7 @@ public class ZuulServerApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ZuulServerApplication.class, args);
+        SpringApplication.run(ZuulApplication.class, args);
     }
 }
 

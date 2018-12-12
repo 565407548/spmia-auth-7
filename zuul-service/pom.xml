@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.thoughtmechanix</groupId>
-  <artifactId>zuulsvr</artifactId>
+  <artifactId>zuul-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -64,7 +64,7 @@
   <!--Docker build Config-->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <start-class>com.thoughtmechanix.zuulsvr.ZuulServerApplication</start-class>
+    <start-class>com.thoughtmechanix.zuulsvr.ZuulApplication</start-class>
     <java.version>1.8</java.version>
     <docker.image.name>johncarnell/tmx-zuulsvr</docker.image.name>
     <docker.image.tag>chapter7</docker.image.tag>
