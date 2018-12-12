@@ -1,8 +1,8 @@
 spring:
   cloud:
     config:
-      label: master
-      profile: dev
+      label: master #分支
+      profile: dev # dev, test, prod
       discovery:
         service-id: config-service
-        enabled: true
+        enabled: true # 允许发现服务

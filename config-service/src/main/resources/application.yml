@@ -12,18 +12,20 @@
 ####################################
 server:
   port: 8889
+
 spring:
   cloud:
     config:
       discovery:
-        enabled: true
-      server:
-        encrypt.enabled: false
+        enabled: true # 开启Config服务发现支持
+      server: # 相关说明文档 http://www.itmuch.com/spring-cloud/config-server-encrypt-decrypt/
+        encrypt:
+          enabled: false #config server 不解密，直接返回密文。config client自己解密
         git:
-          uri: https://github.com/565407548/config-repo
-          searchPaths: licensing-service,organization-service,specialroutes-service,zuul-service,auth-service
-          username:
-          password:
+          uri: https://github.com/565407548/spmia-config-repo #config git url
+          searchPaths: licensing-service,organization-service,specialroutes-service,zuul-service,auth-service # search path in git
+          username: # 用户名，public项目不需要
+          password: # 密码， public项目不需要
 
 
 ####
@@ -50,3 +52,7 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.thoughtmechanix: DEBUG
+
+#encrypt:
+#  key: foo #设置对称加密
+# 没设置时，密码是啥？？？？

@@ -3,10 +3,10 @@ spring:
     name: zuul-service
   profiles:
     active:
-      default
+      default # 设置环境: dev, test, prod
   cloud:
     config:
-      enabled: true
+      enabled: true #允许通过 config server 获取配置信息
 
 server:
   port: 5555
@@ -27,16 +27,13 @@ eureka:
     serviceUrl:
         defaultZone: http://localhost:8761/eureka/
 
-
-
-#
 #
 #  debug:
 #    request: true
-#
-zuul:
-  prefix:  /api
-  routes:
-    organizationservice: /organization/**
-    licensingservice: /licensing/**
-    auth-service: /auth/**
+# routes from config
+#zuul:
+##  prefix:  /api
+#  routes:
+#    organizationservice: /organization/**
+#    licensingservice: /licensing/**
+#    auth-service: /auth-service/**

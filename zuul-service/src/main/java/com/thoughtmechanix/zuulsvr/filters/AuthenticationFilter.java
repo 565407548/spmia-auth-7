@@ -10,26 +10,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
 public class AuthenticationFilter extends ZuulFilter {
-    private static final int FILTER_ORDER =  2;
-    private static final boolean  SHOULD_FILTER=false;
+    private static final int FILTER_ORDER = 2;
+    private static final boolean SHOULD_FILTER = false;
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
+    //FilterUtils @Component
     @Autowired
     FilterUtils filterUtils;
 
+    // ZuulServerApplication @Bean
     @Autowired
     RestTemplate restTemplate;
 
+    // filterUtils.PRE_FILTER_TYPE 路由前处理
     @Override
     public String filterType() {
-        return filterUtils.PRE_FILTER_TYPE;
+        return FilterUtils.PRE_FILTER_TYPE;
     }
 
     @Override
@@ -43,24 +43,21 @@ public class AuthenticationFilter extends ZuulFilter {
     }
 
     private boolean isAuthTokenPresent() {
-        if (filterUtils.getAuthToken() !=null){
-            return true;
-        }
-
-        return false;
+        return filterUtils.getAuthToken() != null;
     }
 
-    private UserInfo isAuthTokenValid(){
-        ResponseEntity<UserInfo> restExchange = null;
+    private UserInfo isAuthTokenValid() {
+        ResponseEntity<UserInfo> restExchange;
         try {
             restExchange =
                     restTemplate.exchange(
                             "http://auth-service/v1/validate/{token}",
                             HttpMethod.GET,
-                            null, UserInfo.class, filterUtils.getAuthToken());
-        }
-        catch(HttpClientErrorException ex){
-            if (ex.getStatusCode()==HttpStatus.UNAUTHORIZED) {
+                            null,
+                            UserInfo.class,
+                            filterUtils.getAuthToken());
+        } catch (HttpClientErrorException ex) {
+            if (ex.getStatusCode() == HttpStatus.UNAUTHORIZED) {
                 return null;
             }
 
@@ -76,13 +73,13 @@ public class AuthenticationFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
 
         //If we are dealing with a call to the authentication service, let the call go through without authenticating
-        if ( ctx.getRequest().getRequestURI().equals("/api/auth-service/v1/authenticate")){
+        if (ctx.getRequest().getRequestURI().equals("/api/auth-service/v1/authenticate")) {
             return null;
         }
 
-        if (isAuthTokenPresent()){
-           logger.debug("Authentication token is present.");
-        }else{
+        if (isAuthTokenPresent()) {
+            logger.debug("Authentication token is present.");
+        } else {
             logger.debug("Authentication token is not present.");
 
             ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
@@ -90,11 +87,11 @@ public class AuthenticationFilter extends ZuulFilter {
         }
 
         UserInfo userInfo = isAuthTokenValid();
-        if (userInfo!=null){
+        if (userInfo != null) {
             filterUtils.setUserId(userInfo.getUserId());
             filterUtils.setOrgId(userInfo.getOrganizationId());
 
-           logger.debug("Authentication token is valid.");
+            logger.debug("Authentication token is valid.");
             return null;
         }
 

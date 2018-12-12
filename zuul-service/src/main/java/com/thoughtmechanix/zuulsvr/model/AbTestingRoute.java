@@ -2,8 +2,11 @@ package com.thoughtmechanix.zuulsvr.model;
 
 public class AbTestingRoute {
     String serviceName;
+    // N or Y
     String active;
+    // ???
     String endpoint;
+    // 权重，用于标记多大概率请求导入到testing中
     Integer weight;
 
     public String getActive() {

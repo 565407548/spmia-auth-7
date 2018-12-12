@@ -18,13 +18,13 @@
   </parent>
   <modules>
     <module>auth-service</module>
-    <module>confsvr</module>
+    <module>config-service</module>
     <module>licensing-service</module>
     <module>organization-service</module>
-    <module>orgservice-new</module>
+    <module>organization-service-new</module>
     <module>eureka-service</module>
     <module>specialroutes-service</module>
-    <module>zuulsvr</module>
+    <module>zuul-service</module>
   </modules>
   <build>
     <plugins>

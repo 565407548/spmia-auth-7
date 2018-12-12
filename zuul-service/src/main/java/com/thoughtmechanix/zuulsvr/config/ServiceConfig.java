@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Configuration
 public class ServiceConfig {
+  /**
+   * 从 config server中加载该数据
+   */
   @Value("${signing.key}")
   private String jwtSigningKey="";
 

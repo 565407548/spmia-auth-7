@@ -46,8 +46,10 @@ If everything starts correctly you should see a bunch of Spring Boot information
 
 # auth
 ## http://localhost:8901/auth/oauth/token
++ post
 + Authorization: Username,Password
 + Body: grant_type, scope, username, password
 
 ## http://localhost:8901/auth/user
++ get
 + Headers: Authorization Bearer [access_token]

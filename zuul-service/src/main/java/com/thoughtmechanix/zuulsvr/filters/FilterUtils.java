@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 注册组件
+ */
 @Component
 public class FilterUtils {
     public static final String CORRELATION_ID = "tmx-correlation-id";
