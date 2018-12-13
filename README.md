@@ -53,3 +53,6 @@ If everything starts correctly you should see a bunch of Spring Boot information
 ## http://localhost:8901/auth/user
 + get
 + Headers: Authorization Bearer [access_token]
+
+## UserContext 
++ UserContext的实现说明，一个外部网络请求，是通过一个线程完成的。

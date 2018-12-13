@@ -2,7 +2,7 @@ spring:
   cloud:
     config:
       label: master #分支
-      profile: dev # dev, test, prod
+      profile: dev #dev, test, prod
       discovery:
         service-id: config-service
-        enabled: true # 允许发现服务
+        enabled: true #允许发现服务
