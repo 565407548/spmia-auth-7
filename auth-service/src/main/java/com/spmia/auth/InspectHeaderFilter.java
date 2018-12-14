@@ -1,5 +1,7 @@
 package com.spmia.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
@@ -13,13 +15,15 @@ import java.io.IOException;
 
 @Component
 public class InspectHeaderFilter implements Filter {
+    private static final Logger logger = LoggerFactory.getLogger(InspectHeaderFilter.class);
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        System.out.println("I AM HITTING THE AUTH SERVER: " + httpServletRequest.getHeader("Authorization"));
+        logger.info("I AM HITTING THE AUTH SERVER: " + httpServletRequest.getHeader("Authorization"));
 
         filterChain.doFilter(httpServletRequest, servletResponse);
     }

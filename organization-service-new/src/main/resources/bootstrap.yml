@@ -6,4 +6,8 @@ spring:
       default
   cloud:
     config:
-      enabled: true
+      label: master
+      profile: dev
+      discovery:
+        service-id: config-service
+        enabled: true

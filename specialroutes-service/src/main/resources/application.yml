@@ -1,10 +1,10 @@
 
 #Setting the logging levels for the service
-logging:
-  level:
-    com.netflix: WARN
-    org.springframework.web: WARN
-    com.thoughtmechanix: DEBUG
+#logging:
+#  level:
+#    com.netflix: WARN
+#    org.springframework.web: WARN
+#    com.thoughtmechanix: DEBUG
 
 eureka:
   instance:

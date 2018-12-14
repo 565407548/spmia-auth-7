@@ -16,8 +16,7 @@ public class SpecialRoutesApplication {
 
     @Bean
     public Filter userContextFilter() {
-        UserContextFilter userContextFilter = new UserContextFilter();
-        return userContextFilter;
+        return new UserContextFilter();
     }
 
     public static void main(String[] args) {

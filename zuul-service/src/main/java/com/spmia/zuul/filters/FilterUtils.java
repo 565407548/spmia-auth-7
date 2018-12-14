@@ -15,9 +15,9 @@ public class FilterUtils {
     public static final String AUTH_TOKEN     = "Authorization";
     public static final String USER_ID        = "tmx-user-id";
     public static final String ORG_ID         = "tmx-org-id";
-    public static final String PRE_FILTER_TYPE = "pre";
-    public static final String POST_FILTER_TYPE = "post";
-    public static final String ROUTE_FILTER_TYPE = "route";
+    public static final String FILTER_TYPE_PRE = "pre";
+    public static final String FILTER_TYPE_POST = "post";
+    public static final String FILTER_TYPE_ROUTE = "route";
 
     public String getCorrelationId(){
         RequestContext ctx = RequestContext.getCurrentContext();

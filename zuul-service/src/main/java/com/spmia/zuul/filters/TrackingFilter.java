@@ -22,7 +22,8 @@ public class TrackingFilter extends ZuulFilter {
 
     @Override
     public String filterType() {
-        return FilterUtils.PRE_FILTER_TYPE;
+
+        return FilterUtils.FILTER_TYPE_PRE;
     }
 
     @Override

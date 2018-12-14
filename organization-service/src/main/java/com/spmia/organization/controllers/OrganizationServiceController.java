@@ -24,10 +24,12 @@ public class OrganizationServiceController {
 
     @RequestMapping(value="/{organizationId}",method = RequestMethod.GET)
     public Organization getOrganization( @PathVariable("organizationId") String organizationId) {
-        logger.debug("Looking up data for org {}", organizationId);
+        logger.info("Looking up data for org {}", organizationId);
 
         Organization org = orgService.getOrg(organizationId);
         org.setContactName(org.getContactName());
+
+        logger.info(String.format("Org: %s",org.toString()));
         return org;
     }
 

@@ -20,7 +20,7 @@ public class ResponseFilter extends ZuulFilter{
 
     @Override
     public String filterType() {
-        return FilterUtils.POST_FILTER_TYPE;
+        return FilterUtils.FILTER_TYPE_POST;
     }
 
     @Override

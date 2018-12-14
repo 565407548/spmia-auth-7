@@ -17,6 +17,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.ProxyRequestHelper;
 import org.springframework.http.HttpMethod;
@@ -39,18 +41,22 @@ import java.util.Random;
 
 @Component
 public class SpecialRoutesFilter extends ZuulFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(SpecialRoutesFilter.class);
+
     private static final int FILTER_ORDER = 1;
-    private static final boolean SHOULD_FILTER = false;
+    private static final boolean SHOULD_FILTER = true;
 
     @Autowired
     FilterUtils filterUtils;
+
 
     @Autowired
     RestTemplate restTemplate;
 
     @Override
     public String filterType() {
-        return filterUtils.ROUTE_FILTER_TYPE;
+        return FilterUtils.FILTER_TYPE_ROUTE;
     }
 
     @Override
@@ -82,11 +88,13 @@ public class SpecialRoutesFilter extends ZuulFilter {
     }
 
     private String buildRouteString(String oldEndpoint, String newEndpoint, String serviceName) {
-        int index = oldEndpoint.indexOf(serviceName);
+        logger.info(String.format("old:%s new:%s serviceName: %s", oldEndpoint, newEndpoint, serviceName));
 
+        int index = oldEndpoint.indexOf(serviceName);
         String strippedRoute = oldEndpoint.substring(index + serviceName.length());
-        System.out.println("Target route: " + String.format("%s/%s", newEndpoint, strippedRoute));
-        return String.format("%s/%s", newEndpoint, strippedRoute);
+        String route = String.format("%s/%s", newEndpoint, strippedRoute);
+        logger.info(String.format("Target route: %s", route));
+        return route;
     }
 
     private String getMethod(HttpServletRequest request) {
@@ -200,6 +208,8 @@ public class SpecialRoutesFilter extends ZuulFilter {
 
         int value = random.nextInt((10 - 1) + 1) + 1;
 
+        logger.info(String.format("random=%d weight=%d", value, testRoute.getWeight()));
+
         return testRoute.getWeight() < value;
     }
 
@@ -243,6 +253,7 @@ public class SpecialRoutesFilter extends ZuulFilter {
             response = forward(httpClient, method, route, request, headers,
                     params, requestEntity);
             setResponse(response);
+            logger.info(response.getEntity().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

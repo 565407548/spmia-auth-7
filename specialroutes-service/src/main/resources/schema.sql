@@ -9,4 +9,4 @@ CREATE TABLE abtesting (
 
 
 INSERT INTO abtesting (service_name, active, endpoint, weight)
-VALUES ('organization-service', 'Y', 'http://organization-service-new:8087', 5);
+VALUES ('organization-service', 'Y', 'http://localhost:8087', 5);

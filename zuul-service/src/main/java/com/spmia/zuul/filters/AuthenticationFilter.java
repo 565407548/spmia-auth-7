@@ -26,10 +26,10 @@ public class AuthenticationFilter extends ZuulFilter {
     @Autowired
     RestTemplate restTemplate;
 
-    // filterUtils.PRE_FILTER_TYPE 路由前处理
+    // filterUtils.FILTER_TYPE_PRE 路由前处理
     @Override
     public String filterType() {
-        return FilterUtils.PRE_FILTER_TYPE;
+        return FilterUtils.FILTER_TYPE_PRE;
     }
 
     @Override
