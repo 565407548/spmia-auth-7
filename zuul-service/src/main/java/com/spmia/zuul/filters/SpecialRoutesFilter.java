@@ -3,6 +3,8 @@ package com.spmia.zuul.filters;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.spmia.zuul.model.AbTestingRoute;
+import okhttp3.*;
+import okhttp3.internal.http.HttpMethod;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -21,12 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.ProxyRequestHelper;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,25 +36,25 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class SpecialRoutesFilter extends ZuulFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(SpecialRoutesFilter.class);
 
-    private static final int FILTER_ORDER = 1;
+    private static final int SIMPLE_HOST_ROUTING_FILTER_ORDER = 100;
+    private static final int FILTER_ORDER = 99;
     private static final boolean SHOULD_FILTER = true;
 
     @Autowired
     FilterUtils filterUtils;
 
-
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private ProxyRequestHelper helper;
 
     @Override
     public String filterType() {
@@ -61,22 +63,21 @@ public class SpecialRoutesFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return FILTER_ORDER;
+        return SIMPLE_HOST_ROUTING_FILTER_ORDER - 1;
     }
 
     @Override
     public boolean shouldFilter() {
-        return SHOULD_FILTER;
+        return RequestContext.getCurrentContext().getRouteHost() != null
+                && RequestContext.getCurrentContext().sendZuulResponse();
     }
-
-    private ProxyRequestHelper helper = new ProxyRequestHelper();
 
     private AbTestingRoute getAbRoutingInfo(String serviceName) {
         ResponseEntity<AbTestingRoute> restExchange;
         try {
             restExchange = restTemplate.exchange(
                     "http://specialroutes-service/v1/route/abtesting/{serviceName}",
-                    HttpMethod.GET,
+                    org.springframework.http.HttpMethod.GET,
                     null,
                     AbTestingRoute.class,
                     serviceName);
@@ -215,18 +216,68 @@ public class SpecialRoutesFilter extends ZuulFilter {
 
     @Override
     public Object run() {
-        RequestContext ctx = RequestContext.getCurrentContext();
 
+        RequestContext context = RequestContext.getCurrentContext();
         AbTestingRoute abTestRoute = getAbRoutingInfo(filterUtils.getServiceId());
 
         if (abTestRoute != null && useSpecialRoute(abTestRoute)) {
-            String route = buildRouteString(
-                    ctx.getRequest().getRequestURI(),
-                    abTestRoute.getEndpoint(),
-                    ctx.get("serviceId").toString());
-            forwardToSpecialRoute(route);
-        }
 
+
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    // customize
+                    .build();
+
+            HttpServletRequest request = context.getRequest();
+
+//            String uri = buildRouteString(
+//                    context.getRequest().getRequestURI(),
+//                    abTestRoute.getEndpoint(),
+//                    context.get("serviceId").toString());
+            String uri = this.helper.buildZuulRequestURI(request);
+
+            String method = request.getMethod();
+
+
+            Headers.Builder headers = new Headers.Builder();
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String name = headerNames.nextElement();
+                Enumeration<String> values = request.getHeaders(name);
+
+                while (values.hasMoreElements()) {
+                    String value = values.nextElement();
+                    headers.add(name, value);
+                }
+            }
+
+            InputStream inputStream = request.getInputStream();
+
+            RequestBody requestBody = null;
+            if (inputStream != null && HttpMethod.permitsRequestBody(method)) {
+                MediaType mediaType = null;
+                if (headers.get("Content-Type") != null) {
+                    mediaType = MediaType.parse(headers.get("Content-Type"));
+                }
+                requestBody = RequestBody.create(mediaType, StreamUtils.copyToByteArray(inputStream));
+            }
+
+            Request.Builder builder = new Request.Builder()
+                    .headers(headers.build())
+                    .url(uri)
+                    .method(method, requestBody);
+
+            Response response = httpClient.newCall(builder.build()).execute();
+
+            LinkedMultiValueMap<String, String> responseHeaders = new LinkedMultiValueMap<>();
+
+            for (Map.Entry<String, List<String>> entry : response.headers().toMultimap().entrySet()) {
+                responseHeaders.put(entry.getKey(), entry.getValue());
+            }
+
+            this.helper.setResponse(response.code(), response.body().byteStream(),
+                    responseHeaders);
+            context.setRouteHost(null); // prevent SimpleHostRoutingFilter from running
+        }
         return null;
     }
 
