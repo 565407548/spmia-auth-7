@@ -53,8 +53,8 @@ public class SpecialRoutesFilter extends ZuulFilter {
     @Autowired
     RestTemplate restTemplate;
 
-    @Autowired
-    private ProxyRequestHelper helper;
+    //    @Autowired
+    private ProxyRequestHelper helper = new ProxyRequestHelper();
 
     @Override
     public String filterType() {
@@ -68,8 +68,9 @@ public class SpecialRoutesFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        return RequestContext.getCurrentContext().getRouteHost() != null
-                && RequestContext.getCurrentContext().sendZuulResponse();
+//        return RequestContext.getCurrentContext().getRouteHost() != null
+//                && RequestContext.getCurrentContext().sendZuulResponse();
+        return true;
     }
 
     private AbTestingRoute getAbRoutingInfo(String serviceName) {
@@ -216,67 +217,71 @@ public class SpecialRoutesFilter extends ZuulFilter {
 
     @Override
     public Object run() {
+        try {
+            RequestContext context = RequestContext.getCurrentContext();
+            AbTestingRoute abTestRoute = getAbRoutingInfo(filterUtils.getServiceId());
 
-        RequestContext context = RequestContext.getCurrentContext();
-        AbTestingRoute abTestRoute = getAbRoutingInfo(filterUtils.getServiceId());
-
-        if (abTestRoute != null && useSpecialRoute(abTestRoute)) {
-
-
-            OkHttpClient httpClient = new OkHttpClient.Builder()
-                    // customize
-                    .build();
-
-            HttpServletRequest request = context.getRequest();
-
-//            String uri = buildRouteString(
-//                    context.getRequest().getRequestURI(),
-//                    abTestRoute.getEndpoint(),
-//                    context.get("serviceId").toString());
-            String uri = this.helper.buildZuulRequestURI(request);
-
-            String method = request.getMethod();
+            if (abTestRoute != null && useSpecialRoute(abTestRoute)) {
 
 
-            Headers.Builder headers = new Headers.Builder();
-            Enumeration<String> headerNames = request.getHeaderNames();
-            while (headerNames.hasMoreElements()) {
-                String name = headerNames.nextElement();
-                Enumeration<String> values = request.getHeaders(name);
+                OkHttpClient httpClient = new OkHttpClient.Builder()
+                        // customize
+                        .build();
 
-                while (values.hasMoreElements()) {
-                    String value = values.nextElement();
-                    headers.add(name, value);
+                HttpServletRequest request = context.getRequest();
+
+            String uri = buildRouteString(
+                    context.getRequest().getRequestURI(),
+                    abTestRoute.getEndpoint(),
+                    context.get("serviceId").toString());
+//                String uri = this.helper.buildZuulRequestURI(request);
+
+                String method = request.getMethod();
+
+
+                Headers.Builder headers = new Headers.Builder();
+                Enumeration<String> headerNames = request.getHeaderNames();
+                while (headerNames.hasMoreElements()) {
+                    String name = headerNames.nextElement();
+                    Enumeration<String> values = request.getHeaders(name);
+
+                    while (values.hasMoreElements()) {
+                        String value = values.nextElement();
+                        headers.add(name, value);
+                    }
                 }
-            }
 
-            InputStream inputStream = request.getInputStream();
+                InputStream inputStream = request.getInputStream();
 
-            RequestBody requestBody = null;
-            if (inputStream != null && HttpMethod.permitsRequestBody(method)) {
-                MediaType mediaType = null;
-                if (headers.get("Content-Type") != null) {
-                    mediaType = MediaType.parse(headers.get("Content-Type"));
+                RequestBody requestBody = null;
+                if (inputStream != null && HttpMethod.permitsRequestBody(method)) {
+                    MediaType mediaType = null;
+                    if (headers.get("Content-Type") != null) {
+                        mediaType = MediaType.parse(headers.get("Content-Type"));
+                    }
+                    requestBody = RequestBody.create(mediaType, StreamUtils.copyToByteArray(inputStream));
                 }
-                requestBody = RequestBody.create(mediaType, StreamUtils.copyToByteArray(inputStream));
+
+                Request.Builder builder = new Request.Builder()
+                        .headers(headers.build())
+                        .url(uri)
+                        .method(method, requestBody);
+
+                Response response = httpClient.newCall(builder.build()).execute();
+
+                LinkedMultiValueMap<String, String> responseHeaders = new LinkedMultiValueMap<>();
+
+                for (Map.Entry<String, List<String>> entry : response.headers().toMultimap().entrySet()) {
+                    responseHeaders.put(entry.getKey(), entry.getValue());
+                }
+
+                this.helper.setResponse(response.code(), response.body().byteStream(),
+                        responseHeaders);
+                context.setRouteHost(null); // prevent SimpleHostRoutingFilter from running
             }
 
-            Request.Builder builder = new Request.Builder()
-                    .headers(headers.build())
-                    .url(uri)
-                    .method(method, requestBody);
-
-            Response response = httpClient.newCall(builder.build()).execute();
-
-            LinkedMultiValueMap<String, String> responseHeaders = new LinkedMultiValueMap<>();
-
-            for (Map.Entry<String, List<String>> entry : response.headers().toMultimap().entrySet()) {
-                responseHeaders.put(entry.getKey(), entry.getValue());
-            }
-
-            this.helper.setResponse(response.code(), response.body().byteStream(),
-                    responseHeaders);
-            context.setRouteHost(null); // prevent SimpleHostRoutingFilter from running
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
