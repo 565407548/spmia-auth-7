@@ -14,8 +14,12 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+//    @Autowired
+//    private DemoUserDetailService userDetailsService;
+
     @Autowired
     private UserDetailsService userDetailsService;
+
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {

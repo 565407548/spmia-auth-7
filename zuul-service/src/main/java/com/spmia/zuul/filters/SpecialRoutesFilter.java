@@ -5,20 +5,6 @@ import com.netflix.zuul.context.RequestContext;
 import com.spmia.zuul.model.AbTestingRoute;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 @Component
 public class SpecialRoutesFilter extends ZuulFilter {
@@ -53,8 +39,8 @@ public class SpecialRoutesFilter extends ZuulFilter {
     @Autowired
     RestTemplate restTemplate;
 
-    //    @Autowired
-    private ProxyRequestHelper helper = new ProxyRequestHelper();
+    @Autowired
+    private ProxyRequestHelper helper;
 
     @Override
     public String filterType() {
@@ -99,106 +85,6 @@ public class SpecialRoutesFilter extends ZuulFilter {
         return route;
     }
 
-    private String getMethod(HttpServletRequest request) {
-        String sMethod = request.getMethod();
-        return sMethod.toUpperCase();
-    }
-
-    private HttpHost getHttpHost(URL host) {
-        return new HttpHost(
-                host.getHost(),
-                host.getPort(),
-                host.getProtocol());
-    }
-
-    private Header[] convertHeaders(MultiValueMap<String, String> headers) {
-        List<Header> list = new ArrayList<>();
-        for (String name : headers.keySet()) {
-            for (String value : headers.get(name)) {
-                list.add(new BasicHeader(name, value));
-            }
-        }
-        return list.toArray(new BasicHeader[0]);
-    }
-
-    private HttpResponse forwardRequest(HttpClient httpclient,
-                                        HttpHost httpHost,
-                                        HttpRequest httpRequest) throws IOException {
-        return httpclient.execute(httpHost, httpRequest);
-    }
-
-
-    private MultiValueMap<String, String> revertHeaders(Header[] headers) {
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-        for (Header header : headers) {
-            String name = header.getName();
-            if (!map.containsKey(name)) {
-                map.put(name, new ArrayList<>());
-            }
-            map.get(name).add(header.getValue());
-        }
-        return map;
-    }
-
-    private InputStream getRequestBody(HttpServletRequest request) {
-        InputStream requestEntity = null;
-        try {
-            requestEntity = request.getInputStream();
-        } catch (IOException ex) {
-            // no requestBody is ok.
-        }
-        return requestEntity;
-    }
-
-    private void setResponse(HttpResponse response) throws IOException {
-        this.helper.setResponse(
-                response.getStatusLine().getStatusCode(),
-                response.getEntity() == null ? null : response.getEntity().getContent(),
-                revertHeaders(response.getAllHeaders()));
-    }
-
-    private HttpResponse forward(HttpClient httpclient,
-                                 String method,
-                                 String uri,
-                                 HttpServletRequest request,
-                                 MultiValueMap<String, String> headers,
-                                 MultiValueMap<String, String> params,
-                                 InputStream requestEntity) throws Exception {
-        Map<String, Object> info = this.helper.debug(method, uri, headers, params,
-                requestEntity);
-        URL host = new URL(uri);
-        HttpHost httpHost = getHttpHost(host);
-
-        HttpRequest httpRequest;
-        int contentLength = request.getContentLength();
-        InputStreamEntity entity = new InputStreamEntity(requestEntity, contentLength,
-                request.getContentType() != null
-                        ? ContentType.create(request.getContentType()) : null);
-        switch (method.toUpperCase()) {
-            case "POST":
-                HttpPost httpPost = new HttpPost(uri);
-                httpRequest = httpPost;
-                httpPost.setEntity(entity);
-                break;
-            case "PUT":
-                HttpPut httpPut = new HttpPut(uri);
-                httpRequest = httpPut;
-                httpPut.setEntity(entity);
-                break;
-            case "PATCH":
-                HttpPatch httpPatch = new HttpPatch(uri);
-                httpRequest = httpPatch;
-                httpPatch.setEntity(entity);
-                break;
-            default:
-                httpRequest = new BasicHttpRequest(method, uri);
-
-        }
-
-        httpRequest.setHeaders(convertHeaders(headers));
-
-        return forwardRequest(httpclient, httpHost, httpRequest);
-    }
 
     /**
      * 根据权重，随机判断是否进行 ab testing
@@ -224,16 +110,14 @@ public class SpecialRoutesFilter extends ZuulFilter {
             if (abTestRoute != null && useSpecialRoute(abTestRoute)) {
 
 
-                OkHttpClient httpClient = new OkHttpClient.Builder()
-                        // customize
-                        .build();
+                OkHttpClient httpClient = new OkHttpClient.Builder().build();
 
                 HttpServletRequest request = context.getRequest();
 
-            String uri = buildRouteString(
-                    context.getRequest().getRequestURI(),
-                    abTestRoute.getEndpoint(),
-                    context.get("serviceId").toString());
+                String uri = buildRouteString(
+                        context.getRequest().getRequestURI(),
+                        abTestRoute.getEndpoint(),
+                        context.get("serviceId").toString());
 //                String uri = this.helper.buildZuulRequestURI(request);
 
                 String method = request.getMethod();
@@ -275,8 +159,7 @@ public class SpecialRoutesFilter extends ZuulFilter {
                     responseHeaders.put(entry.getKey(), entry.getValue());
                 }
 
-                this.helper.setResponse(response.code(), response.body().byteStream(),
-                        responseHeaders);
+                this.helper.setResponse(response.code(), response.body().byteStream(), responseHeaders);
                 context.setRouteHost(null); // prevent SimpleHostRoutingFilter from running
             }
 
@@ -284,39 +167,5 @@ public class SpecialRoutesFilter extends ZuulFilter {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private void forwardToSpecialRoute(String route) {
-        RequestContext context = RequestContext.getCurrentContext();
-        HttpServletRequest request = context.getRequest();
-
-        MultiValueMap<String, String> headers = this.helper
-                .buildZuulRequestHeaders(request);
-        MultiValueMap<String, String> params = this.helper
-                .buildZuulRequestQueryParams(request);
-        String method = getMethod(request);
-        InputStream requestEntity = getRequestBody(request);
-        if (request.getContentLength() < 0) {
-            context.setChunkedRequestBody();
-        }
-
-        this.helper.addIgnoredHeaders();
-        CloseableHttpClient httpClient = null;
-        HttpResponse response;
-
-        try {
-            httpClient = HttpClients.createDefault();
-            response = forward(httpClient, method, route, request, headers,
-                    params, requestEntity);
-            setResponse(response);
-            logger.info(response.getEntity().toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException ex) {
-            }
-        }
     }
 }
