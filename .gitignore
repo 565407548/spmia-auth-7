@@ -11,6 +11,9 @@
 *.ipr
 *.iws
 .idea/
+**/mvnw.cmd
+**/mvnw
+**/.mvn
 
 .DS_Store/
 /target
