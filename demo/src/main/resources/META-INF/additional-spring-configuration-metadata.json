@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "taco.config.pageSize",
+      "type": "java.lang.Integer",
+      "description": "Description for taco.config.pageSize."
+    }
+  ]
+}

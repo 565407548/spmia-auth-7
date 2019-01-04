@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "spmia.organization.pageSize",
+      "type": "java.lang.String",
+      "description": "Description for spmia.organization.pageSize."
+    },
+    {
+      "name": "spmia.organization.pageSize1",
+      "type": "java.lang.String",
+      "description": "Description for spmia.organization.pageSize1."
+    }
+  ]
+}

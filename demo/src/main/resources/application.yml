@@ -1,0 +1,6 @@
+taco:
+  config:
+    pageSize: 10
+logging:
+  level:
+    tacos: warn

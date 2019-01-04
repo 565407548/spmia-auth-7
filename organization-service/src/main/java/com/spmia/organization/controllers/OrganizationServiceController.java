@@ -1,11 +1,11 @@
 package com.spmia.organization.controllers;
 
 
+import com.spmia.organization.config.ServiceConfig;
+import com.spmia.organization.constant.Constant;
 import com.spmia.organization.model.Organization;
 import com.spmia.organization.services.OrganizationService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +19,19 @@ public class OrganizationServiceController {
 
     @Autowired
     private OrganizationService orgService;
+    @Autowired
+    private ServiceConfig serviceConfig;
 
     @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET)
-    public Organization getOrganization(@PathVariable("organizationId") String organizationId) {
+    public Organization getOrganization(@PathVariable("organizationId") String organizationId, Constant constant) {
         log.info("Looking up data for org {}", organizationId);
 
         Organization org = orgService.getOrg(organizationId);
         org.setContactName(org.getContactName());
 
         log.info(String.format("Org: %s", org.toString()));
+        log.info(String.format("spmia.organization.pageSize: %d spmia.organization.pageSize:%d", constant.getPageSize(),constant.getPageSize1()));
+        log.info(String.format("signing.key: %s ", serviceConfig.getJwtSigningKey()));
         return org;
     }
 

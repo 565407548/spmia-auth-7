@@ -11,3 +11,15 @@ spring:
       discovery:
         service-id: config-service
         enabled: true
+
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh

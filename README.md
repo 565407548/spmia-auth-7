@@ -56,3 +56,15 @@ If everything starts correctly you should see a bunch of Spring Boot information
 
 ## UserContext 
 + UserContext的实现说明，一个外部网络请求，是通过一个线程完成的。
+
+## config server
+No matter what an application is named, all applications will receive configuration
+properties from the application.yml file.
+所有微服务都会获取名为 application 的配置，同时会获取自己名字对应的配置，自己名字对应的配置优先
+If the active profile is production , both sets of properties—application.yml and application-production.yml—
+will be returned, with those properties in application-production.yml taking precedence over the default properties in application.yml.
+
+
+## 待研究问题
++ 多 eureka 问题
++ open feign / ribbon 

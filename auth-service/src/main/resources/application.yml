@@ -18,6 +18,9 @@ server:
   contextPath: /auth
   port: 8901
 
+taco:
+  constant:
+    pageSize: 10
 #spring:
 #  jpa:
 #    hibernate:

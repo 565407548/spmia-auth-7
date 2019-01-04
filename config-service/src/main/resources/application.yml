@@ -23,10 +23,13 @@ spring:
           enabled: false #config server 不解密，直接返回密文。config client自己解密
         git:
           uri: https://github.com/565407548/spmia-config-repo #config git url
-          searchPaths: licensing-service,organization-service,organization-service-new,specialroutes-service,zuul-service,auth-service # search path in git
+          # search path in git. support wildcards, as: more*
+          searchPaths: licensing-service,organization-service,organization-service-new,specialroutes-service,zuul-service,auth-service
           username: # 用户名，public项目不需要
           password: # 密码， public项目不需要
+          #default-label: sidework #branch. default master.
 
+mana
 
 ####
 #Classpath and file-based solution

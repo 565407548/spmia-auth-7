@@ -41,6 +41,6 @@ public class AbTestingRouteService {
     }
 
     public void deleteRoute(AbTestingRoute route) {
-        abTestingRouteRepository.delete(route.getServiceName());
+        abTestingRouteRepository.deleteById(route.getServiceName());
     }
 }
