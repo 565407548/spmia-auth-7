@@ -1,7 +1,7 @@
 package com.spmia.auth.security;
 
-import com.spmia.auth.model.DemoUser;
-import com.spmia.auth.repository.UserRepo;
+import com.spmia.auth.data.User;
+import com.spmia.auth.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,11 +18,11 @@ import java.util.Optional;
 @Service
 public class DemoUserDetailService implements UserDetailsService {
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<DemoUser> demoUser=userRepo.findById(s);
+        Optional<User> demoUser= userRepository.findById(s);
         return demoUser.get();
     }
 }

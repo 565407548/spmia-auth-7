@@ -1,4 +1,4 @@
-package com.spmia.auth.model;
+package com.spmia.auth.data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

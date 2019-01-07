@@ -1,4 +1,4 @@
-package com.spmia.auth.model;
+package com.spmia.auth.data;
 
 import org.springframework.security.core.GrantedAuthority;
 

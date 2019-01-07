@@ -1,6 +1,5 @@
-package com.spmia.auth.repository;
+package com.spmia.auth.data;
 
-import com.spmia.auth.model.DemoUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * @date: 18-12-19 下午5:23
  */
 @Repository
-public interface UserRepo extends CrudRepository<DemoUser,String> {
+public interface UserRepository extends CrudRepository<User,String> {
 }

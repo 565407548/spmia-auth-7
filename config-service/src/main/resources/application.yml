@@ -29,8 +29,6 @@ spring:
           password: # 密码， public项目不需要
           #default-label: sidework #branch. default master.
 
-mana
-
 ####
 #Classpath and file-based solution
 ####
