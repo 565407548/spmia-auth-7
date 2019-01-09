@@ -9,12 +9,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private DemoUserDetailService userDetailsService;
+
+    @Autowired
+    public void globalUserDetails(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailsService);
+    }
 
     //tag::configureHttpSecurity[]
     //tag::authorizeRequests[]
@@ -29,8 +33,14 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 //end::authorizeRequests[]
 
                 .and()
+                .authorizeRequests()
+                .antMatchers("/register")
+                .permitAll()
+
+                .and()
                 .formLogin()
                 .loginPage("/login")
+                .permitAll()
                 //end::customLoginPage[]
 
                 // tag::enableLogout[]
@@ -51,19 +61,18 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers()
                 .frameOptions()
-                .sameOrigin()
+                .sameOrigin();
         // end::frameOptionsSameOrigin[]
 
         //tag::authorizeRequests[]
         //tag::customLoginPage[]
-        ;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(encoder());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService)
+//                /*.passwordEncoder(encoder())*/;
+//    }
 
     @Override
     @Bean
@@ -73,6 +82,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder encoder() {
-        return new StandardPasswordEncoder("53cr3t");
+//        return new StandardPasswordEncoder("53cr3t");
+        return new BCryptPasswordEncoder();
     }
 }

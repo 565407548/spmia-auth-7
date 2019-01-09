@@ -64,6 +64,12 @@ properties from the application.yml file.
 If the active profile is production , both sets of properties—application.yml and application-production.yml—
 will be returned, with those properties in application-production.yml taking precedence over the default properties in application.yml.
 
+## circuit breaker
+By default, if a circuit breaker protected method is invoked over 20 times, and more
+than 50% of those invocations fail over a period of 10 seconds, the circuit will be thrown
+into an open state. All subsequent calls will be handled by the fallback method. After
+5 seconds, the circuit will enter a half-open state, and the original method will be
+attempted again.
 
 ## 待研究问题
 + 多 eureka 问题

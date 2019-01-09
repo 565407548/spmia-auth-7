@@ -2,6 +2,8 @@ package com.spmia.auth.controller;
 
 import com.spmia.auth.data.RegisterForm;
 import com.spmia.auth.data.UserRepository;
+import com.spmia.auth.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/register")
 public class RegistrationController {
 
-    private UserRepository userRepo;
-    private PasswordEncoder passwordEncoder;
+    @Autowired
+    UserService userService;
 
-    public RegistrationController(
-            UserRepository userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
+    public RegistrationController() {
     }
 
     @GetMapping
@@ -33,7 +32,7 @@ public class RegistrationController {
 
     @PostMapping
     public String processRegistration(RegisterForm form) {
-        userRepo.save(form.toUser(passwordEncoder));
+        userService.insertUser(form.toUser());
         return "redirect:/login";
     }
 

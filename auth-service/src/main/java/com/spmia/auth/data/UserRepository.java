@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
  * @date: 18-12-19 下午5:23
  */
 @Repository
-public interface UserRepository extends CrudRepository<User,String> {
+public interface UserRepository extends CrudRepository<User, String> {
+    User findByUsername(String username);
 }

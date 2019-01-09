@@ -1,7 +1,6 @@
 package com.spmia.auth.data;
 
 import lombok.Data;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @description:
@@ -20,8 +19,8 @@ public class RegisterForm {
     private String zip;
     private String phone;
 
-    public User toUser(PasswordEncoder passwordEncoder) {
-        return new User(username,
-                passwordEncoder.encode(password));
+
+    public User toUser() {
+        return new User(username, password);
     }
 }

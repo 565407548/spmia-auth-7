@@ -15,8 +15,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 server:
-  contextPath: /auth
   port: 8901
+#  servlet:
+#    context-path: /auth
+
 
 taco:
   constant:
@@ -26,3 +28,15 @@ taco:
 #    hibernate:
 #      ddl-auto: update
 #    show-sql: true
+spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: null
+    timeout: 5000ms
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 10
+        max-wait: 100000ms
