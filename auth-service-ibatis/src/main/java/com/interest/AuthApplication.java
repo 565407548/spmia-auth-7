@@ -12,14 +12,6 @@ import java.util.Map;
 @SpringBootApplication
 public class AuthApplication {
 
-    @GetMapping(value = {"/user"}, produces = "application/json")
-    public Map<String, Object> user(OAuth2Authentication user) {
-        Map<String, Object> userInfo = new HashMap<>(1);
-        userInfo.put("user", user.getUserAuthentication().getPrincipal());
-        userInfo.put("authorities", AuthorityUtils.authorityListToSet(user.getUserAuthentication().getAuthorities()));
-        return userInfo;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(AuthApplication.class, args);
     }
