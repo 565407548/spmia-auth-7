@@ -45,6 +45,7 @@
 
     <modules>
         <module>auth-service</module>
+        <module>auth-service-ibatis</module>
         <module>config-service</module>
         <module>licensing-service</module>
         <module>organization-service</module>

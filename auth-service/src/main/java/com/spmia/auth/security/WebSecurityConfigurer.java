@@ -7,13 +7,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
-    private DemoUserDetailService userDetailsService;
+    private MyUserDetailService userDetailsService;
 
     @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder builder) throws Exception {
@@ -25,43 +23,58 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     //tag::customLoginPage[]
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/design", "/orders")
-                .access("hasRole('ROLE_USER')")
-                .antMatchers("/", "/**").access("permitAll")
-                //end::authorizeRequests[]
+        http.authorizeRequests()
+                .anyRequest().authenticated()
 
                 .and()
-                .authorizeRequests()
-                .antMatchers("/register")
+                .formLogin().loginPage("/login")
                 .permitAll()
 
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                //end::customLoginPage[]
-
-                // tag::enableLogout[]
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login")
-                // end::enableLogout[]
+                .permitAll()
 
-                // Make H2-Console non-secured; for debug purposes
-                // tag::csrfIgnore[]
                 .and()
                 .csrf()
-                .ignoringAntMatchers("/h2-console/**")
-                // end::csrfIgnore[]
+                .disable();
 
-                // Allow pages to be loaded in frames from the same origin; needed for H2-Console
-                // tag::frameOptionsSameOrigin[]
-                .and()
-                .headers()
-                .frameOptions()
-                .sameOrigin();
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/design", "/orders")
+//                .access("hasRole('ROLE_USER')")
+//                .antMatchers("/", "/**").access("permitAll")
+//                //end::authorizeRequests[]
+//
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/register")
+//                .permitAll()
+//
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .permitAll()
+//                //end::customLoginPage[]
+//
+//                // tag::enableLogout[]
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/login")
+//                // end::enableLogout[]
+//
+//                // Make H2-Console non-secured; for debug purposes
+//                // tag::csrfIgnore[]
+//                .and()
+//                .csrf()
+//                .ignoringAntMatchers("/h2-console/**")
+//                // end::csrfIgnore[]
+//
+//                // Allow pages to be loaded in frames from the same origin; needed for H2-Console
+//                // tag::frameOptionsSameOrigin[]
+//                .and()
+//                .headers()
+//                .frameOptions()
+//                .sameOrigin();
         // end::frameOptionsSameOrigin[]
 
         //tag::authorizeRequests[]
@@ -80,9 +93,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public PasswordEncoder encoder() {
-//        return new StandardPasswordEncoder("53cr3t");
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder encoder() {
+////        return new StandardPasswordEncoder("53cr3t");
+//        return new BCryptPasswordEncoder();
+//    }
 }

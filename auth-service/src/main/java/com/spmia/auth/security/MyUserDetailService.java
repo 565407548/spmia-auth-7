@@ -16,7 +16,7 @@ import java.util.Optional;
  * @date: 18-12-19 下午5:17
  */
 @Service
-public class DemoUserDetailService implements UserDetailsService {
+public class MyUserDetailService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 

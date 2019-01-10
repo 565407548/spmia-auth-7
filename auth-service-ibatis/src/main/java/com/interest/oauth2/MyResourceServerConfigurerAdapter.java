@@ -1,16 +1,14 @@
-package com.spmia.auth.security;
+package com.interest.oauth2;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
-/**
- * @description:
- * @author: Zheng Jim
- * @date: 19-1-9 下午3:55
- */
 @Configuration
-public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+@EnableResourceServer
+public class MyResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -23,4 +21,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .anyRequest()
                 .authenticated();
     }
+
 }
