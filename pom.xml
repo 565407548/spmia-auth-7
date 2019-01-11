@@ -32,15 +32,15 @@
     </properties>
 
     <!--<dependencyManagement>-->
-        <!--<dependencies>-->
-            <!--<dependency>-->
-                <!--<groupId>org.springframework.cloud</groupId>-->
-                <!--<artifactId>spring-cloud-dependencies</artifactId>-->
-                <!--<version>${spring-cloud.version}</version>-->
-                <!--<type>pom</type>-->
-                <!--<scope>import</scope>-->
-            <!--</dependency>-->
-        <!--</dependencies>-->
+    <!--<dependencies>-->
+    <!--<dependency>-->
+    <!--<groupId>org.springframework.cloud</groupId>-->
+    <!--<artifactId>spring-cloud-dependencies</artifactId>-->
+    <!--<version>${spring-cloud.version}</version>-->
+    <!--<type>pom</type>-->
+    <!--<scope>import</scope>-->
+    <!--</dependency>-->
+    <!--</dependencies>-->
     <!--</dependencyManagement>-->
 
     <modules>
@@ -53,6 +53,7 @@
         <module>eureka-service</module>
         <module>specialroutes-service</module>
         <module>zuul-service</module>
+        <module>interest-service</module>
     </modules>
     <build>
         <plugins>

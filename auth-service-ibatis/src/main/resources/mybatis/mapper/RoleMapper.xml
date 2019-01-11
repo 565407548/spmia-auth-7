@@ -68,13 +68,6 @@
         </where>
     </update>
 
-    <!-- 通过id得到Modules集合 -->
-    <select id="getModulesById" resultType="String">
-        select modules
-        from oauth_role
-        where id in (select role_id from oauth_user_role where user_id =
-                                                           #{id})
-    </select>
     <!-- 通过UserId得到对应的role -->
     <select id="getRolesByUserId" resultType="String">
         select `role`

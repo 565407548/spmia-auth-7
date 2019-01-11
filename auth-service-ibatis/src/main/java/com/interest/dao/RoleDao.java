@@ -48,13 +48,6 @@ public interface RoleDao {
     public void deleteRoles(@Param("groupId") List<String> groupId);
 
     /**
-     * 通过id得到Modules集合
-     * @param id
-     * @return
-     */
-    public List<String> getModulesById(@Param("id") int id);
-
-    /**
      * 得到角色全部数据
      * @return
      */
