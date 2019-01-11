@@ -1,5 +1,6 @@
 # Java class files
 *.class
+file/**
 
 # Eclipse project files
 .classpath
