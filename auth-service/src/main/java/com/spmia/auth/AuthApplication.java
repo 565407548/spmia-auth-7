@@ -18,9 +18,9 @@ import java.util.Map;
 @EnableAuthorizationServer
 public class AuthApplication {
 
-    @RequestMapping(value = {"/user"}, produces = "application/json")
+    @RequestMapping(value = {"/user_auth"}, produces = "application/json")
     public Map<String, Object> user(OAuth2Authentication user) {
-        Map<String, Object> userInfo = new HashMap<>();
+        Map<String, Object> userInfo = new HashMap<>(1);
         userInfo.put("user", user.getUserAuthentication().getPrincipal());
         userInfo.put("authorities", AuthorityUtils.authorityListToSet(user.getUserAuthentication().getAuthorities()));
         return userInfo;

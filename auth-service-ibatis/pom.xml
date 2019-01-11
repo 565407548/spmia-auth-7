@@ -8,7 +8,7 @@
 	<!--<packaging>war</packaging>-->
 	<packaging>jar</packaging>
 
-	<name>interest-server</name>
+	<name>auth-server</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -26,6 +26,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-oauth2</artifactId>

@@ -25,7 +25,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/user_auth")
-    public Map<String, Object> user(OAuth2Authentication user) {
+    public Map<String, Object> getUserAuthInfo(OAuth2Authentication user) {
         Map<String, Object> userInfo = new HashMap<>(1);
         userInfo.put("user", user.getUserAuthentication().getPrincipal());
         userInfo.put("authorities", AuthorityUtils.authorityListToSet(user.getUserAuthentication().getAuthorities()));
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/public/user")
-    public UserEntity userGet() {
+    public UserEntity getUser() {
         int userid = SecurityAuthenUtil.getIdWithoutException();
         UserEntity userEntity = userService.getEntityById(userid);
         log.debug("The method is ending");
@@ -49,7 +49,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/users")
-    public PageResult usersList(@RequestParam(value = "name", required = false) String name, @RequestParam("pageSize") int pageSize, @RequestParam("page") int page) {
+    public PageResult getUserList(@RequestParam(value = "name", required = false) String name, @RequestParam("pageSize") int pageSize, @RequestParam("page") int page) {
         PageResult pageResult = new PageResult();
         pageResult.setData(userService.usersList(name, pageSize, page * pageSize));
         pageResult.setTotalCount(userService.usersSize(name, pageSize, page * pageSize));
