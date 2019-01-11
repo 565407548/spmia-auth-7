@@ -3,6 +3,7 @@ package com.interest.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.interest.model.UserRoleEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -65,4 +66,8 @@ public interface RoleDao {
      * @return
      */
     public List<String> getRolesByUserId(int id);
+
+    void insertUserRole(@Param("userRoleEntity")UserRoleEntity entity);
+
+    void updateUserrole(@Param("userRoleEntity")UserRoleEntity entity);
 }

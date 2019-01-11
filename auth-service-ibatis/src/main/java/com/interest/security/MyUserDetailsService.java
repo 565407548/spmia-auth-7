@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 
 @Component
 public class MyUserDetailsService implements UserDetailsService {
@@ -50,19 +51,17 @@ public class MyUserDetailsService implements UserDetailsService {
             password = DEFAULT_PASSWORD;
         }
 
-        User user = new User(String.valueOf(userEntity.getId()), password, getGrantedAuthority());
+        User user = new User(String.valueOf(userEntity.getId()), password, getGrantedAuthority(userEntity.getId()));
         return user;
     }
 
-    public static Collection<GrantedAuthority> getGrantedAuthority() {
+    public Collection<GrantedAuthority> getGrantedAuthority(int id) {
         Collection<GrantedAuthority> collection = new HashSet<>();
 
-//		Iterator<String> iterator =  roleDao.getRolesByUserId(userEntity.getId()).iterator();
-//		while (iterator.hasNext()){
-//			collection.add(new SimpleGrantedAuthority(iterator.next()));
-//		}
-        collection.add(new SimpleGrantedAuthority("ROLE_USER"));
-        collection.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        Iterator<String> iterator = roleDao.getRolesByUserId(id).iterator();
+        while (iterator.hasNext()) {
+            collection.add(new SimpleGrantedAuthority(iterator.next()));
+        }
 
         return collection;
     }

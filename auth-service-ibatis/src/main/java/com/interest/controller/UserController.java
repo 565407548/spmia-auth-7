@@ -20,6 +20,8 @@ import java.util.Map;
 public class UserController {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final int ROLE_ADMIN=1;
+    private static final int ROLE_USER=2;
 
     @Resource(name = "userServiceImpl")
     private UserService userService;

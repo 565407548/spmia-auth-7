@@ -96,6 +96,7 @@ CREATE TABLE `sys_role` (
 LOCK TABLES `sys_role` WRITE;
 /*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
 INSERT INTO `sys_role` VALUES (1,'ROLE_ADMIN','超级管理员','4;5;6;7;8;9;10;11;14;1;12;13;','超级管理员，拥有全部权限。');
+INSERT INTO `sys_role` VALUES (2,'ROLE_USER','普通用户','4;5;6;7;8;9;10;11;14;1;12;13;','普通用户，拥有部分权限。');
 /*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
 UNLOCK TABLES;
 

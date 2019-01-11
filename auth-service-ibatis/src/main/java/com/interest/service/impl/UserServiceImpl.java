@@ -1,50 +1,55 @@
 package com.interest.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.interest.dao.RoleDao;
 import com.interest.dao.UserDao;
 import com.interest.model.UserEntity;
+import com.interest.model.UserRoleEntity;
+import com.interest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.interest.service.UserService;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service(value = "userServiceImpl")
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserDao userDao;
-	
-	@Override
-	public void insert(UserEntity userEntity) {
-		userDao.insert(userEntity);
-	}
+    private static final int ROLE_ADMIN = 1;
+    private static final int ROLE_USER = 2;
 
-	@Override
-	public void del(UserEntity userEntity) {
-		userDao.del(userEntity);
-	}
+    @Autowired
+    private UserDao userDao;
 
-	@Override
-	public UserEntity getUserEntityByLoginName(String loginName) {
-		return userDao.getUserEntityByLoginName(loginName);
-	}
+    @Autowired
+    private RoleDao roleDao;
 
-	@Override
-	public List<UserEntity> usersList(String name, int pageSize, int start) {
-		return userDao.usersList( name,  pageSize,  start);
-	}
+    @Override
+    public void insert(UserEntity userEntity) {
+        userDao.insert(userEntity);
+    }
 
-	@Override
-	public Integer usersSize(String name, int pageSize, int start) {
-		return userDao.usersSize(name, pageSize, start);
-	}
+    @Override
+    public void del(UserEntity userEntity) {
+        userDao.del(userEntity);
+    }
 
-	@Override
-	public void insertUser(UserEntity userEntity) {
+    @Override
+    public UserEntity getUserEntityByLoginName(String loginName) {
+        return userDao.getUserEntityByLoginName(loginName);
+    }
+
+    @Override
+    public List<UserEntity> usersList(String name, int pageSize, int start) {
+        return userDao.usersList(name, pageSize, start);
+    }
+
+    @Override
+    public Integer usersSize(String name, int pageSize, int start) {
+        return userDao.usersSize(name, pageSize, start);
+    }
+
+    @Override
+    public void insertUser(UserEntity userEntity) {
 		/*String password = null;
 		try {
 			password = MD5Util.encrypt(userEntity.getPassword());
@@ -52,28 +57,34 @@ public class UserServiceImpl implements UserService {
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}*/
-		//userEntity.setPassword(new Md5PasswordEncoder().encodePassword(userEntity.getPassword(), null));
-		userEntity.setPassword("{bcrypt}"+new BCryptPasswordEncoder().encode(userEntity.getPassword()));
-		userDao.insertUser(userEntity);
-	}
+        //userEntity.setPassword(new Md5PasswordEncoder().encodePassword(userEntity.getPassword(), null));
+        userEntity.setPassword("{bcrypt}" + new BCryptPasswordEncoder().encode(userEntity.getPassword()));
+        userDao.insertUser(userEntity);
 
-	@Override
-	public void updateUser(UserEntity userEntity) {
-		//userEntity.setPassword(new Md5PasswordEncoder().encodePassword(userEntity.getPassword(), null));
-		if(userEntity.getId() != 8888) {
-			userEntity.setPassword("{bcrypt}"+new BCryptPasswordEncoder().encode(userEntity.getPassword()));
-		}
-		userDao.updateUser(userEntity);
-	}
+        UserRoleEntity userRoleEntity = new UserRoleEntity(userEntity.getId(), ROLE_USER);
+        roleDao.insertUserRole(userRoleEntity);
+    }
 
-	@Override
-	public void deleteUsers(List<String> groupId) {
-		userDao.deleteUsers(groupId);
-	}
+    @Override
+    public void updateUser(UserEntity userEntity) {
+        //userEntity.setPassword(new Md5PasswordEncoder().encodePassword(userEntity.getPassword(), null));
+        if (userEntity.getId() != 8888) {
+            userEntity.setPassword("{bcrypt}" + new BCryptPasswordEncoder().encode(userEntity.getPassword()));
+        }
+        userDao.updateUser(userEntity);
 
-	@Override
-	public UserEntity getEntityById(int userid) {
-		return userDao.getUserEntityById(userid);
-	}
+        UserRoleEntity userRoleEntity = new UserRoleEntity(userEntity.getId(), ROLE_USER);
+        roleDao.updateUserrole(userRoleEntity);
+    }
+
+    @Override
+    public void deleteUsers(List<String> groupId) {
+        userDao.deleteUsers(groupId);
+    }
+
+    @Override
+    public UserEntity getEntityById(int userid) {
+        return userDao.getUserEntityById(userid);
+    }
 
 }
