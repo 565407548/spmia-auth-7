@@ -21,10 +21,7 @@ public class UserEntity {
 	 * 密码
 	 */
 	private String password;
-	/**
-	 *用户类型（0:普通用户，1:管理员）
-	 */
-	private Integer usertype;
+
 	/**
 	 *
 	 */
@@ -76,14 +73,6 @@ public class UserEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Integer getUsertype() {
-		return usertype;
-	}
-
-	public void setUsertype(Integer usertype) {
-		this.usertype = usertype;
 	}
 
 	public String getEmail() {

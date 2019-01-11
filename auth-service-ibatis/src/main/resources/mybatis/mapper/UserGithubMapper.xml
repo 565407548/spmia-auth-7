@@ -10,7 +10,7 @@
 	</resultMap>
 
 	<insert id="insertEntity" parameterType="UserGithubEntity">
-		insert into user_github (login,avatar_url,html_url,email,userid)
+		insert into oauth_user_github (login,avatar_url,html_url,email,userid)
 		values (#{login},#{avatarUrl},#{htmlUrl},#{email},#{userid})
 	</insert>
 

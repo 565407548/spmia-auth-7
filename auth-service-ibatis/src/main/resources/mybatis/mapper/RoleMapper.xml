@@ -10,7 +10,7 @@
     </resultMap>
     <!-- 获取role列表 -->
     <select id="rolesList" resultMap="roleMap">
-        <![CDATA[select * from sys_role]]>
+        <![CDATA[select * from oauth_role]]>
         <![CDATA[ order by id ]]>
         <if test="pageSize != null and start != null ">
             limit #{start},#{pageSize}
@@ -20,17 +20,17 @@
     <select id="rolesSize" resultType="Integer">
 	    <![CDATA[
         select count(*)
-        from sys_role
+        from oauth_role
         ]]>
 	</select>
     <!-- 新建角色信息 -->
     <insert id="insertRole">
-        insert into sys_role (role, name, modules, `describe`)
+        insert into oauth_role (role, name, modules, `describe`)
         values (#{roleEntity.role}, #{roleEntity.name}, #{roleEntity.modules}, #{roleEntity.describe})
     </insert>
     <!-- 更新角色信息 -->
     <update id="updateRole">
-        update sys_role set
+        update oauth_role set
         role = #{roleEntity.role},
         name = #{roleEntity.name},
         modules =
@@ -43,7 +43,7 @@
     </update>
     <!-- 删除角色信息 -->
     <delete id="deleteRoles">
-        delete from sys_role
+        delete from oauth_role
         <where>
             <if test="groupId !=null">
                 id in
@@ -56,12 +56,12 @@
     </delete>
 
     <insert id="insertUserRole">
-        insert into r_user_role (user_id, role_id)
+        insert into oauth_user_role (user_id, role_id)
         values (#{userRoleEntity.userId}, #{userRoleEntity.roleId})
     </insert>
 
     <update id="updateUserRole">
-        update r_user_role
+        update oauth_user_role
         set role_id=#{userRoleEntity.roleId}
         <where>
             user_id=#{userRoleEntity.userId}
@@ -71,20 +71,20 @@
     <!-- 通过id得到Modules集合 -->
     <select id="getModulesById" resultType="String">
         select modules
-        from sys_role
-        where id in (select role_id from r_user_role where user_id =
+        from oauth_role
+        where id in (select role_id from oauth_user_role where user_id =
                                                            #{id})
     </select>
     <!-- 通过UserId得到对应的role -->
     <select id="getRolesByUserId" resultType="String">
         select `role`
-        from sys_role
-        where id in (select role_id from r_user_role where user_id =
+        from oauth_role
+        where id in (select role_id from oauth_user_role where user_id =
                                                            #{id})
     </select>
     <!-- 得到角色全部数据 -->
     <select id="allRoles" resultMap="roleMap">
         select *
-        from sys_role
+        from oauth_role
     </select>
 </mapper>

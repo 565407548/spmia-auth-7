@@ -60,8 +60,6 @@ public interface UserDao {
 	 */
 	public void deleteUsers(@Param("groupId") List<String> groupId);
 
-	public void updateUsertype(@Param("loginName")String loginName,@Param("usertype") Integer usertype);
-
     public UserEntity getUserEntityById(@Param("id")Integer id);
 
     UserEntity getEntityByGithubid(@Param("githubid") String login);
@@ -71,6 +69,4 @@ public interface UserDao {
 	void insertUserByQq(UserEntity userEntity);
 
     List<UserEntity> getALl();
-
-	void updateUsertypeById(@Param("id") int id,@Param("usertype") Integer usertype);
 }

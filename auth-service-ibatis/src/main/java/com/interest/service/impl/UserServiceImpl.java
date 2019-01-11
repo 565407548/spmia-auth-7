@@ -8,6 +8,7 @@ import com.interest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,15 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void insertUser(UserEntity userEntity) {
-		/*String password = null;
-		try {
-			password = MD5Util.encrypt(userEntity.getPassword());
-			userEntity.setPassword(password);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}*/
-        //userEntity.setPassword(new Md5PasswordEncoder().encodePassword(userEntity.getPassword(), null));
         userEntity.setPassword("{bcrypt}" + new BCryptPasswordEncoder().encode(userEntity.getPassword()));
         userDao.insertUser(userEntity);
 

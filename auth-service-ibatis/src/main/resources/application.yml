@@ -2,19 +2,21 @@ server:
   port: 8901
   servlet:
     context-path: /auth
-    eureka:
-      instance:
-        preferIpAddress: true
-      client:
-        registerWithEureka: true
-        fetchRegistry: true
-        serviceUrl:
-          defaultZone: http://localhost:8761/eureka/
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
 spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:mysql://localhost:3306/interest?useUnicode=true&characterEncoding=UTF-8&useSSL=false&jdbcCompliantTruncation=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/SPMIA?useUnicode=true&characterEncoding=UTF-8&useSSL=false&jdbcCompliantTruncation=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: 123456
     hikari:

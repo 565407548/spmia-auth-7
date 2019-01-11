@@ -7,7 +7,6 @@
 		<result column="login_name" property="loginName" />
 		<result column="password" property="password" />
 		<result column="email" property="email" />
-		<result column="usertype" property="usertype" />
 		<result column="headimg" property="headimg" />
 		<result column="url" property="url" />
 		<result column="create_time" property="createTime" />
@@ -16,7 +15,7 @@
 	</resultMap>
 	<!-- 获取user列表 -->
 	<select id="usersList" resultMap="userMap">
-	<![CDATA[select * from sys_user]]>
+	<![CDATA[select * from oauth_user]]>
 		<where>
 			<if test="name != null and name != ''">
 				name = #{name}
@@ -29,7 +28,7 @@
 	</select>
 	<!-- 获取user列表的总量 -->
 	<select id="usersSize" resultType="Integer">  
-	    <![CDATA[select count(*) from sys_user]]>
+	    <![CDATA[select count(*) from oauth_user]]>
 		<where>
 			<if test="name != null and name != ''">
 				name = #{name}
@@ -38,12 +37,12 @@
 	</select>
 	<insert id="insert">
 		<if test="userEntity != null">
-			insert into sys_user (name,sex,age) values
+			insert into oauth_user (name,sex,age) values
 			(#{userEntity.name},#{userEntity.sex},#{userEntity.age})
 		</if>
 	</insert>
 	<delete id="del">
-		delete from sys_user
+		delete from oauth_user
 		<where>
 			<if test="userEntity.id != null and userEntity.id != ''">id = #{userEntity.id}</if>
 			<if test="userEntity.name != null and userEntity.name != ''">and name = #{userEntity.name}</if>
@@ -52,13 +51,13 @@
 		</where>
 	</delete>
 	<update id="update">
-		update sys_user set name = #{name},sex = #{sex},age = #{age}
+		update oauth_user set name = #{name},sex = #{sex},age = #{age}
 		<where>
 			id = #{id}
 		</where>
 	</update>
 	<select id="select">
-		select * from sys_user
+		select * from oauth_user
 		<where>
 			<if test="id != null">id = #{id}</if>
 			<if test="name != null">and name = #{name}</if>
@@ -67,7 +66,7 @@
 		</where>
 	</select>
 	<select id="getUserEntityByLoginName" resultMap="userMap">
-		select * from sys_user
+		select * from oauth_user
 		<where>
 			login_name = #{loginName}
 		</where>
@@ -78,13 +77,13 @@
 				   order="AFTER">
 			select LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_user (name,login_name,password,email,usertype,headimg,url,create_time,githubid)
+		insert into oauth_user (name,login_name,password,email,headimg,url,create_time,githubid)
 		values
-		(#{name},#{loginName},#{password},#{email},#{usertype},#{headimg},#{url},#{createTime},#{githubid})
+		(#{name},#{loginName},#{password},#{email},#{headimg},#{url},#{createTime},#{githubid})
 	</insert>
 	<!-- 更新用户信息 -->
 	<update id="updateUser" parameterType="UserEntity">
-		update sys_user set
+		update oauth_user set
 		name = #{name},
 		password = #{password},
 		sex = #{sex},
@@ -95,24 +94,9 @@
 			login_name = #{loginName}
 		</where>
 	</update>
-	<update id="updateUsertype">
-		update sys_user set
-		usertype = #{usertype}
-		<where>
-			login_name = #{loginName}
-		</where>
-	</update>
-
-	<update id="updateUsertypeById">
-		update sys_user set
-		usertype = #{usertype}
-		<where>
-			id = #{id}
-		</where>
-	</update>
 	<!-- 删除用户信息 -->
 	<delete id="deleteUsers">
-		delete from sys_user
+		delete from oauth_user
 		<where>
 			<if test="groupId !=null">
 				id in
@@ -124,21 +108,21 @@
 		</where>
 	</delete>
 	<select id="getUserEntityById" resultMap="userMap">
-		SELECT * FROM sys_user
+		SELECT * FROM oauth_user
 		<where>
 			id = #{id}
 		</where>
 	</select>
 
 	<select id="getEntityByGithubid" resultMap="userMap">
-		select * from sys_user
+		select * from oauth_user
 		<where>
 			githubid = #{githubid}
 		</where>
 	</select>
 
 	<select id="getEntityByQqid" resultMap="userMap">
-		select * from sys_user
+		select * from oauth_user
 		<where>
 			qqid = #{qqid}
 		</where>
@@ -149,13 +133,13 @@
 				   order="AFTER">
 			select LAST_INSERT_ID()
 		</selectKey>
-		insert into sys_user (name,usertype,headimg,create_time,qqid)
+		insert into oauth_user (name,headimg,create_time,qqid)
 		values
-		(#{name},#{usertype},#{headimg},#{createTime},#{qqid})
+		(#{name},#{headimg},#{createTime},#{qqid})
 	</insert>
 
     <select id="getALl" resultMap="userMap">
-        select * from sys_user
+        select * from oauth_user
     </select>
 
 </mapper>

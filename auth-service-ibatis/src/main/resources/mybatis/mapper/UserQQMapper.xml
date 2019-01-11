@@ -10,7 +10,7 @@
 	</resultMap>
 
 	<insert id="insertEntity" parameterType="UserQQEntity">
-		insert into user_qq (openid,nickname,figureurl_qq_1,gender,userid)
+		insert into oauth_user_qq (openid,nickname,figureurl_qq_1,gender,userid)
 		values (#{openid},#{nickname},#{figureurlQq1},#{gender},#{userid})
 	</insert>
 

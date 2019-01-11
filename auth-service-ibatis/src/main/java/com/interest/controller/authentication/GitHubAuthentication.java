@@ -100,7 +100,6 @@ public class GitHubAuthentication implements MyAuthentication {
         userEntity.setName(githubToken.getString("login"));
         userEntity.setUrl(githubToken.getString("html_url"));
         userEntity.setGithubid(githubToken.getString("login"));
-        userEntity.setUsertype(0);
         userEntity.setCreateTime(DateUtil.currentTimestamp());
         userDao.insertUser(userEntity);
 

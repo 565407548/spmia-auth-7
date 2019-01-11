@@ -64,11 +64,11 @@ spring boot项目,与我的另外一个前端项目[interest-web](https://github
 
 **设计思路** 
 
- 1. 用户表sys_user：存储用户基本信息。
- 2. 角色表sys_role：存储不同的角色。
- 3. 菜单表sys_menu：存储菜单信息。
+ 1. 用户表oauth_user：存储用户基本信息。
+ 2. 角色表oauth_role：存储不同的角色。
+ 3. 菜单表oauth_menu：存储菜单信息。
  4. 用户和角色关系表r_user_role：存储用户和角色的关系。 
-逻辑是sys_user表通过id关联r_user_role表得到对应的角色ids，再通过得到的角色ids关联sys_role表得到对应的菜单ids，然后通过菜单ids关联sys_menu表得到前端需要显示的菜单数据。
+逻辑是oauth_user表通过id关联r_user_role表得到对应的角色ids，再通过得到的角色ids关联oauth_role表得到对应的菜单ids，然后通过菜单ids关联sys_menu表得到前端需要显示的菜单数据。
 
 ## 项目搭建
 

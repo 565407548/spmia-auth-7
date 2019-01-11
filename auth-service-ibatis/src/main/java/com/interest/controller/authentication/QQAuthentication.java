@@ -97,7 +97,6 @@ public class QQAuthentication implements MyAuthentication {
         userEntity.setHeadimg(qqUserInfo.getString("figureurl_qq_1"));
         userEntity.setName(qqUserInfo.getString("nickname"));
         userEntity.setQqid(openid);
-        userEntity.setUsertype(0);
         userEntity.setCreateTime(DateUtil.currentTimestamp());
         userDao.insertUserByQq(userEntity);
 
