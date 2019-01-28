@@ -80,7 +80,7 @@ public class SpecialRoutesFilter extends ZuulFilter {
 
         int index = oldEndpoint.indexOf(serviceName);
         String strippedRoute = oldEndpoint.substring(index + serviceName.length());
-        String route = String.format("%s/%s", newEndpoint, strippedRoute);
+        String route = String.format("%s%s", newEndpoint, strippedRoute);
         logger.info(String.format("Target route: %s", route));
         return route;
     }

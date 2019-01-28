@@ -1,8 +1,7 @@
-
 security:
   oauth2:
     resource:
-       userInfoUri: http://localhost:8901/auth/user_auth
+       userInfoUri: http://localhost:5555/api/auth-service/auth/user_auth
 
 #Setting the logging levels for the service
 #logging:
