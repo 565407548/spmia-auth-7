@@ -17,6 +17,7 @@ public class MyResourceServerConfigurerAdapter extends ResourceServerConfigurerA
                 .antMatchers("/register").permitAll()
                 .antMatchers("/**/*.jpg", "/**/*.png", "/**/*.jpeg").permitAll()
                 .antMatchers("/roles/**").permitAll()
+                .antMatchers("/v1/organizations/**").hasRole("ADMIN")
                 .antMatchers("/users/**", "/menus/**", "/admin/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated();
