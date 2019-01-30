@@ -6,13 +6,8 @@ import com.spmia.organization.services.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping(value="v1/organizations")
@@ -21,6 +16,11 @@ public class OrganizationServiceController {
 
     @Autowired
     private OrganizationService orgService;
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "songjia";
+    }
 
     @RequestMapping(value="/{organizationId}",method = RequestMethod.GET)
     public Organization getOrganization( @PathVariable("organizationId") String organizationId) {

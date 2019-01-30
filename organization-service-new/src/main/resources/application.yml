@@ -3,6 +3,7 @@ security:
     resource:
       userInfoUri: http://localhost:5555/api/auth-service/auth/user_auth
 
+
 #Setting the logging levels for the service
 #logging:
 #  level:
