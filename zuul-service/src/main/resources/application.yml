@@ -11,6 +11,10 @@ spring:
 server:
   port: 5555
 
+feign:
+  hystrix:
+    enabled: true
+
 #Setting logging levels
 #logging:
 #    level:

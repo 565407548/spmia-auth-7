@@ -3,6 +3,7 @@ package com.spmia.zuul.filters;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.spmia.zuul.model.AbTestingRoute;
+import com.spmia.zuul.remote.AbTestRemote;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import org.slf4j.Logger;
@@ -42,6 +43,9 @@ public class SpecialRoutesFilter extends ZuulFilter {
     @Autowired
     private ProxyRequestHelper helper;
 
+    @Autowired
+    AbTestRemote abTestRemote;
+
     @Override
     public String filterType() {
         return FilterUtils.FILTER_TYPE_ROUTE;
@@ -59,20 +63,26 @@ public class SpecialRoutesFilter extends ZuulFilter {
         return true;
     }
 
+//    private AbTestingRoute getAbRoutingInfo(String serviceName) {
+//        ResponseEntity<AbTestingRoute> restExchange;
+//        try {
+//            restExchange = restTemplate.exchange(
+//                    "http://specialroutes-service/v1/route/abtesting/{serviceName}",
+//                    org.springframework.http.HttpMethod.GET,
+//                    null,
+//                    AbTestingRoute.class,
+//                    serviceName);
+//        } catch (HttpClientErrorException ex) {
+//            if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
+//                return null;
+//            }
+//            throw ex;
+//        }
+//        return restExchange.getBody();
+//    }
+
     private AbTestingRoute getAbRoutingInfo(String serviceName) {
-        ResponseEntity<AbTestingRoute> restExchange;
-        try {
-            restExchange = restTemplate.exchange(
-                    "http://specialroutes-service/v1/route/abtesting/{serviceName}",
-                    org.springframework.http.HttpMethod.GET,
-                    null,
-                    AbTestingRoute.class,
-                    serviceName);
-        } catch (HttpClientErrorException ex) {
-            if (ex.getStatusCode() == HttpStatus.NOT_FOUND) return null;
-            throw ex;
-        }
-        return restExchange.getBody();
+        return abTestRemote.getAbTestRoute(serviceName);
     }
 
     private String buildRouteString(String oldEndpoint, String newEndpoint, String serviceName) {
@@ -92,7 +102,9 @@ public class SpecialRoutesFilter extends ZuulFilter {
     public boolean useSpecialRoute(AbTestingRoute testRoute) {
         Random random = new Random();
 
-        if (testRoute.getActive().equals("N")) return false;
+        if (testRoute.getActive()==0) {
+            return false;
+        }
 
         int value = random.nextInt((10 - 1) + 1) + 1;
 
@@ -160,7 +172,8 @@ public class SpecialRoutesFilter extends ZuulFilter {
                 }
 
                 this.helper.setResponse(response.code(), response.body().byteStream(), responseHeaders);
-                context.setRouteHost(null); // prevent SimpleHostRoutingFilter from running
+                // prevent SimpleHostRoutingFilter from running
+                context.setRouteHost(null);
             }
 
         } catch (Exception e) {
