@@ -74,3 +74,4 @@ attempted again.
 ## 待研究问题
 + 多 eureka 问题
 + open feign / ribbon 
++ feign/hystrix/turbine使用： https://www.cnblogs.com/cralor/p/9230728.html
