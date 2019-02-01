@@ -81,6 +81,10 @@ public class SpecialRoutesFilter extends ZuulFilter {
 //        return restExchange.getBody();
 //    }
 
+    /**
+     * @param serviceName
+     * @return
+     */
     private AbTestingRoute getAbRoutingInfo(String serviceName) {
         return abTestRemote.getAbTestRoute(serviceName);
     }

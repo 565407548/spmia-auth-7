@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * @description:
+ * @description: 获取abtesting数据。
+ * 网络请求出现错误，比如服务无响应、数据解析出错，会由 AbTestHystrix 处理
  * @author: Zheng Jim
  * @date: 19-1-31 上午11:33
  */
