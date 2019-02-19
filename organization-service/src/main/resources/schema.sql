@@ -7,6 +7,14 @@ CREATE TABLE organizations (
   contact_email          TEXT NOT NULL,
   contact_phone          TEXT   NOT NULL);
 
+create table goods (
+  id varchar(10),
+  title varchar(20),
+  detail varchar(1000),
+  created timestamp,
+  update_time timestamp null default current_timestamp on update current_timestamp
+);
+
 
 INSERT INTO organizations (organization_id, name, contact_name, contact_email, contact_phone)
 VALUES ('e254f8c-c442-4ebe-a82a-e2fc1d1ff78a', 'customer-crm-co', 'Mark Balster', 'mark.balster@custcrmco.com', '823-555-1212');
