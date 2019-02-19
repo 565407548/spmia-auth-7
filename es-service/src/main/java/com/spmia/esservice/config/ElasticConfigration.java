@@ -13,6 +13,7 @@ import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.Node;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,7 +36,7 @@ public class ElasticConfigration {
     //    @Value("${elasticsearch.clusterName}")
     private String esClusterName;
 
-    private RestClient client;
+    private RestHighLevelClient client;
 
     private void init() {
         esHost = "127.0.0.1";
@@ -60,23 +61,23 @@ public class ElasticConfigration {
 //        }
 
         RestClientBuilder builder = RestClient.builder(
-                new HttpHost(esHost, esPort, "http"));
-        Header[] defaultHeaders = new Header[]{new BasicHeader("header", "value")};
-        builder.setDefaultHeaders(defaultHeaders);
-        builder.setMaxRetryTimeoutMillis(10000);
-        builder.setFailureListener(new RestClient.FailureListener() {
-            @Override
-            public void onFailure(Node node) {
-                super.onFailure(node);
-            }
-        });
+                new HttpHost(esHost, esPort));
+//        Header[] defaultHeaders = new Header[]{new BasicHeader("header", "value")};
+//        builder.setDefaultHeaders(defaultHeaders);
+//        builder.setMaxRetryTimeoutMillis(10000);
+//        builder.setFailureListener(new RestClient.FailureListener() {
+//            @Override
+//            public void onFailure(Node node) {
+//                super.onFailure(node);
+//            }
+//        });
 
 
-        client = builder.build();
+        client = new RestHighLevelClient(builder);
     }
 
     @Bean
-    public RestClient client() {
+    public RestHighLevelClient client() {
         return client;
     }
 

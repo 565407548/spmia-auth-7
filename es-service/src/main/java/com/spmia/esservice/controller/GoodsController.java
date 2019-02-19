@@ -34,6 +34,6 @@ public class GoodsController {
         goods.setName(name);
         goods.setComment(comment);
 
-        return goodsService.find(goods);
+        return goodsService.search();
     }
 }

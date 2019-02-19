@@ -21,40 +21,47 @@ public class GoodsService implements InitializingBean {
 
     private String index = "goods";
 
-//    private String type = "doc";
+    //    private String type = "doc";
     private String type = "";
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        esRepo.createIndexIfNotExist(index, type);
+//        esRepo.createIndexIfNotExist(index, type);
     }
 
     public void add(List<Goods> goodsList) {
-        if (goodsList == null || goodsList.isEmpty()) {
-            return;
-        }
-        for (Goods goods : goodsList) {
-            esRepo.addDocumentToBulkProcessor(index, type, goods);
-        }
+//        if (goodsList == null || goodsList.isEmpty()) {
+//            return;
+//        }
+//        for (Goods goods : goodsList) {
+//            esRepo.addDocumentToBulkProcessor(index, type, goods);
+//        }
     }
 
     public void add(Goods goods) {
-        esRepo.addDocument(index, type, goods);
+//        esRepo.addDocument(index, type, goods);
     }
 
     public void delete(String id) {
-        esRepo.deleteDocumentById(index, type, id);
+//        esRepo.deleteDocumentById(index, type, id);
     }
 
     public void update(Goods goods) {
-        esRepo.updateDocument(index, type, String.valueOf(goods.getId()), goods);
+//        esRepo.updateDocument(index, type, String.valueOf(goods.getId()), goods);
     }
+//
+//    public List<Goods> find(Goods goods) {
+//        return esRepo.queryDocumentByParam(
+//                index,
+//                type,
+//                goods,
+//                Goods.class);
+//    }
 
-    public List<Goods> find(Goods goods) {
-        return esRepo.queryDocumentByParam(
+    public List<Goods> search() {
+        return esRepo.search(
                 index,
-                type,
-                goods,
+                null,
                 Goods.class);
     }
 }
